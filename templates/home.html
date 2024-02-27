@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>homepage</title>
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jQuery.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'ip.js' %}"></script>
+
+
+
+
+    <style type="text/css">
+			.hh{
+                float: right;
+				width:200px;
+				height: 100px;
+				background-color: palevioletred;
+			}
+    </style>
+</head>
+<body>
+<audio  controls  src="{% static "xxx.mp3" %}"></audio>
+<video controls  src='{% static "red.mp4"%}'></video>
+
+{% ifequal  content_list '' %}
+    <div>hehe</div>
+{% else %}
+    {% for i in  content_list  %}
+
+    <p>
+        <img src="/static/img/{{ i }}" alt="未显示出来">
+    </p>
+        <button class="hh" name="{{ i }}">删除</button>
+    {% endfor %}
+{% endifequal %}
+<form method="post" enctype="multipart/form-data" action="{% url 'add' %}">
+    <div>
+        <label for="icon_input">图像</label>
+        <input type="file" name="img" id="icon_input">
+    </div>
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">提交</button>
+</form>
+
+<div>http://dlzlc8nocvf6.xiaomiqiu.com</div>
+<br><br>
+<br><br>
+<a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2023025483号</a>
+</body>
+<script>
+    $('button').click(function (){
+         var name=$(this).attr('name')
+        var obj=$(this)
+        $.ajax({
+                            url:'delete/',//为空表示向当前地址发送请求
+                            type:'post',
+                            data:{
+                                'name':name,
+                                'csrfmiddlewaretoken':'{{ csrf_token }}'
+                            },//这里写要发送的前端数据
+                            success:function (args){
+                                if(args['msg']=='bad'){
+                                    alert('false')
+                                }
+                                if(args['msg']=='ok'){
+                                    obj.text('已删除')
+                                }
+                            }//接受后端发来的数据
+                     })
+    })
+
+</script>
+</html>

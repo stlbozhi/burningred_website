@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>homepage1</title>
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jQuery.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'ip.js' %}"></script>
+
+
+
+</head>
+<body>
+<br />
+<p><input type="text"><button>select</button></p>
+<b>{{a}}</b>
+    <ul id='u'>
+    {%for i in lis%}
+        <li>{{i}}</li>
+    {%endfor%}
+    </ul>
+</body>
+<script>
+    $('button').click(function (){
+
+         var content=$('input').val()
+
+
+        $.ajax({
+                            url:'find/',//为空表示向当前地址发送请求
+                            type:'post',
+                            data:{
+                                'name':content,
+                                'csrfmiddlewaretoken':'{{ csrf_token }}'
+                            },//这里写要发送的前端数据
+                            success:function (args){
+                                if(args['msg']=='bad'){
+                                    alert('false')
+                                }
+                                else{
+                                    $('#u').empty()
+
+                                    for(i=0;i<Number(args['le']);i++){
+                                        src="download/"+content+''+args['msg'][i]
+                                        if(src.indexOf('.')!=-1){
+                                        t="<li>"+args['msg'][i]+"</li>&nbsp;&nbsp;&nbsp;<a href="+src+">"+args['msg'][i]+"</a>"}
+                                        else{
+                                            t="<li>"+args['msg'][i]+"</li>"
+                                        }
+                                        $('#u').append(t)
+                                        }
+                                //args['msg'][i]
+                                }
+
+                                    $('b').text(content)
+
+
+                            }//接受后端发来的数据
+                     })
+
+
+
+
+    //     $('a').click()(function (){
+    //         src=$(this).attr('h')
+    //     $.ajax({
+    //                         url:'download/',//为空表示向当前地址发送请求
+    //                         type:'post',
+    //                         data:{
+    //                             'name':src,
+    //                             'csrfmiddlewaretoken':'{{ csrf_token }}'
+    //                         },//这里写要发送的前端数据
+    //                         success:function (args){
+    //                             if(args['msg']=='bad'){
+    //                                 alert('false')
+    //                             }
+    //                             else{
+
+    //                             }}
+    // })
+    // })
+    })
+
+</script>
+</html>

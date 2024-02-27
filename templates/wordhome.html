@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jQuery.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'ip.js' %}"></script>
+<style type="text/css">
+    @media (min-width: 0px) and (max-width:768px) {
+				{#.c1{#}
+                {#    text-align: center;#}
+                {#    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;#}
+                {#    font-weight: bold;#}
+                {#    font-size: 20px;#}
+                {#    height: 50px;#}
+                {#    background-color:#}
+
+        .c1{
+
+            text-align: center;
+            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            height: 50px;
+            background-color:WhiteSmoke;
+
+        }
+        .c2{
+            width:300px;
+            font-weight: normal;
+            font-size:16px;
+        }
+        .c3{
+            width:20px;
+            font-size: 10px;
+            font-weight: normal;
+        }
+        .btn{
+            position: absolute;
+            left: 0px;
+            height: 34px;
+            font-size: 16px;
+        }
+        .btn2{
+            font-weight:normal;
+            font-size: 13px;
+            position: absolute;
+            right: 0px;
+            height: 34px;
+        }
+        .sj{
+            text-align: center;
+            font-size: larger;
+            font-weight: bold;
+        }
+    }
+
+
+</style>
+</head>
+<body>
+<audio src="{% static 'xxx.mp3'%}" controls autoplay></audio>
+{#<video src="{% static '1686231257795.mp4'%}" controls autoplay></video>#}
+    <div style="height: 20px"></div>
+    <div class="sj">考研上岸！！！上岸！！！<button class="btn">标记</button><button hehe="1" class="btn2">取消标记</button></div>
+    <div style="height: 30px"></div>
+    <div>
+    <table border="1">
+    {% for data in a %}
+
+        <tr class="c1">
+        {% for i in data %}
+            {% if forloop.counter == 1%}
+                <td class="c3">
+
+                     <span class="idd"><a href="/redetailword/{{i}}"><span>{{ i }}</span></a></span>
+                </td>
+            {% endif %}
+            {% if forloop.counter == 2 %}
+                        <td><span>{{ i }}</span></td>
+            {% endif %}
+            {% if forloop.counter == 3 %}
+                        <td class="c2"><span>{{ i }}</span></td>
+            {% endif %}
+
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+</body>
+<script>
+        {% for data in a %}
+            {% for i in data %}
+                {% if forloop.counter == 1 %}
+                    var id={{ i }}
+                {% endif %}
+                {% if forloop.counter == 4%}
+                    var i={{ i }}
+                    if (i==2){
+                        {#alert(id)#}
+                        $('.c3').eq(id-1).css('background-color','SpringGreen')
+                        {#$('.c3').css('color','green')#}
+                        {#alert(i)#}
+                    }
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        function aa(){
+            $.ajax({
+                        url: 'http://'+ip+'/wordlist/',//为空表示向当前地址发送请求
+                        type: 'post',
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success: function (args) {
+                            for(let i=0;i<length(args['shoucang']);i++)
+                                $('.c3').eq(args['shoucang']-1).css('background-color','SpringGreen')
+                            }
+                        })//接受后端发来的数据
+                    }
+        function bb(){
+            aa()
+             setTimeout("bb()",1000)
+        }
+        bb()
+
+
+        $('.btn').on("touchend",function (){
+            var hehe=$('.btn').attr('hehe')
+            if (hehe==1){
+                {#var i=1#}
+                {#$('.c3 a').css('display','none')#}
+                $('.btn').attr('hehe','2')
+                function disp_prompt() {
+                    var name=prompt("请输入要标记的单词序号",); // 弹出input框
+                    if(name != null){
+                        $(".c3").eq(name-5).css('background-color','Lime')
+                        $.ajax({
+                            url:'http://'+ip+'/change/',//为空表示向当前地址发送请求
+                            type:'post',
+                            data:{
+                                'id':name,
+                                'csrfmiddlewaretoken':'{{ csrf_token }}'
+                            },//这里写要发送的前端数据
+                            success:function (args){
+                                if(args['msg']=='bad'){
+                                    alert('false')
+                                }
+                            }//接受后端发来的数据
+                     })
+                    }
+                }
+                disp_prompt()
+            }
+            else {
+                $('.btn').attr('hehe','1')
+            }
+        })
+        $('.btn2').on('touchend',function (){
+            function disp_prompt() {
+                var name=prompt("请输入取消标记的单词序号",); // 弹出input框
+                if(name != null){
+                    $(".c3").eq(name-5).css('background-color','Beige')
+                    $.ajax({
+                        url:'http://'+ip+'/change/',//为空表示向当前地址发送请求
+                        type:'post',
+                        data:{
+                            'd':true,
+                            'id':name,
+                            'csrfmiddlewaretoken':'{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success:function (args){
+                            if(args['msg']=='bad'){
+                                alert('false')
+                            }
+                        }//接受后端发来的数据
+                 })
+                }
+                }
+            disp_prompt()
+            })
+    </script>
+</html>

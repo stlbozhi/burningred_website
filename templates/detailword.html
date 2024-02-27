@@ -1,0 +1,434 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="{% static 'jQuery.js' %}"></script>
+    <script src="{% static 'ip.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+
+    <script>
+        $(function () {
+
+            {% for data in a %}
+                {% if forloop.counter == 1 %}
+                    {% for foo in data  %}
+                        {% if forloop.counter == 1 %}
+                            var id ={{ foo }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        $('.all').on("touchend",function () {
+            if ($('.fanyi').css('display') === 'block') {
+                $('.fanyi').css('display', 'none')
+            } else {
+                $('.fanyi').css('display', 'block')
+            }
+        })
+
+
+
+            $(".all").on("touchstart", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                startX = e.originalEvent.changedTouches[0].pageX,
+                    startY = e.originalEvent.changedTouches[0].pageY;
+            });
+            $(".all").on("touchend", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                moveEndX = e.originalEvent.changedTouches[0].pageX
+                moveEndY = e.originalEvent.changedTouches[0].pageY
+                X = moveEndX - startX
+                Y = moveEndY - startY
+                //左滑
+                {#if ( X > 0 ) {#}
+                {#    alert('左滑');#}
+
+                //右滑
+                {#else if ( X < 0 ) {#}
+                {#    alert('右滑');#}
+                //下滑
+
+                //单击
+                if(Y==0) {
+                    {#alert('单击');#}
+                    if ($('.fanyi').css('display') === 'block') {
+                        $('.fanyi').css('display', 'none')
+                    } else {
+                        $('.fanyi').css('display', 'block')
+                    }
+                }
+            });
+            $(".btn").on("touchstart", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                startX = e.originalEvent.changedTouches[0].pageX,
+                    startY = e.originalEvent.changedTouches[0].pageY;
+            });
+            $(".btn").on("touchend", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                moveEndX = e.originalEvent.changedTouches[0].pageX
+                moveEndY = e.originalEvent.changedTouches[0].pageY
+                X = moveEndX - startX
+                Y = moveEndY - startY
+
+
+                //单击
+                if(Y==0) {
+
+                    m = function () {
+                        if (i == 1) {
+
+                            $(".word").css('color', 'DarkOliveGreen')
+                            // alert(id)
+                            $.ajax({
+                                url: 'http://'+ip+'/change/',//为空表示向当前地址发送请求
+                                type: 'post',
+                                data: {
+                                    'id': id,
+                                    'i': i,
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                },//这里写要发送的前端数据
+                                success: function (args) {
+                                }//接受后端发来的数据
+                            })
+                            i = 2
+                            $('.btn').css('background-color', 'SpringGreen')
+                            $('.btn').text('取消收藏')
+                        } else {
+                            $('.btn').css('background-color', '')
+                            $(".word").css('color', '#000000')
+                            $.ajax({
+                                url: 'http://'+ip+'/change/',//为空表示向当前地址发送请求
+                                type: 'post',
+                                data: {
+                                    'id': id,
+                                    'i': i,
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                },//这里写要发送的前端数据
+                                success: function (args) {
+                                }//接受后端发来的数据
+                            })
+                            i = 1
+                            $('.btn').text('收藏')
+                        }
+                    }
+                    m()
+                }
+
+            });
+            $("body").on("touchstart", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                startX = e.originalEvent.changedTouches[0].pageX,
+                    startY = e.originalEvent.changedTouches[0].pageY;
+            });
+            $("body").on("touchend", function (e) {
+                // 判断默认行为是否可以被禁用
+                if (e.cancelable) {
+                    // 判断默认行为是否已经被禁用
+                    if (!e.defaultPrevented) {
+                        e.preventDefault();
+                    }
+                }
+                moveEndX = e.originalEvent.changedTouches[0].pageX
+                moveEndY = e.originalEvent.changedTouches[0].pageY
+                X = moveEndX - startX
+                Y = moveEndY - startY
+                //左滑
+                {#if ( X > 0 ) {#}
+                {#    alert('左滑');#}
+
+                //右滑
+                {#else if ( X < 0 ) {#}
+                {#    alert('右滑');#}
+                //下滑
+                if (Y > 0) {
+                    if (id > 2) {
+                        // alert(id);
+                        id = id - 1
+                    }
+                    $.ajax({
+                        url: 'http://'+ip+'/detailword/' + id + '/',//为空表示向当前地址发送请求
+                        type: 'post',
+                        data: {
+                            id: id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success: function (args) {
+                            var dic_id = args['id'], dic_word = args['word'], dic_fanyi = args['fanyi'],
+                                dic_biaoji = args['biaoji'];
+                            {#alert(dic_word)#}
+                            $('.word').text(dic_word)
+                            $('.fanyi').text(dic_fanyi)
+                            if(dic_biaoji==1){
+                                $('.btn').text('收藏')
+                                $('.btn').css('background-color','')
+                                $('.word').css('color','')
+                            }
+                            else{
+                                $('.btn').css('background-color', 'SpringGreen')
+                                $('.word').css('color', 'DarkOliveGreen')
+                                $('.btn').text('取消收藏')
+                            }
+
+
+                        }//接受后端发来的数据
+                    })
+
+
+                }
+                //上滑
+                else if (Y < 0) {
+                    if (id < 1690) {
+                        id = id + 1
+                    }
+                    $.ajax({
+                        url: 'http://'+ip+'/detailword/' + id + '/',//为空表示向当前地址发送请求
+                        type: 'post',
+                        data: {
+                            id: id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success: function (args) {
+                            var dic_id = args['id'], dic_word = args['word'], dic_fanyi = args['fanyi'],
+                                dic_biaoji = args['biaoji'];
+                            {#alert(dic_word)#}
+                            $('.word').text(dic_word)
+                            $('.fanyi').text(dic_fanyi)
+                            if(dic_biaoji==1){
+                                $('.btn').text('收藏')
+                                $('.btn').css('background-color','')
+                                $('.word').css('color','')
+                            }
+                            else{
+                                $('.btn').css('background-color', 'SpringGreen')
+                                $('.word').css('color', 'DarkOliveGreen')
+                                $('.btn').text('取消收藏')
+                            }
+                        }//接受后端发来的数据
+                    })
+                }
+                //单击
+
+            });
+
+
+                        let iid={{ id }};
+            $('.shangyige').on('touchend',function (){
+                if (iid > 0) {
+                        iid = iid - 1;
+                        id=iid;
+                    }
+    $.ajax({
+                        url: 'http://'+ip+'/detailword/' + iid + '/',//为空表示向当前地址发送请求
+                        type: 'post',
+                        data: {
+                            id: iid,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success: function (args) {
+                            var dic_id = args['id'], dic_word = args['word'], dic_fanyi = args['fanyi'],dic_biaoji = args['biaoji'],dic_src=args['src'];
+
+                            $('.word').text(dic_word)
+                            $('.fanyi').text(dic_fanyi)
+                            $('.x').attr('src',dic_src)
+
+                            if(dic_biaoji==1){
+                                $('.btn').text('收藏')
+                                $('.btn').css('background-color','')
+                                $('.word').css('color','')
+                            }
+                            else{
+                                $('.btn').css('background-color', 'SpringGreen')
+                                $('.word').css('color', 'DarkOliveGreen')
+                                $('.btn').text('取消收藏')
+                            }
+                        }//接受后端发来的数据
+                    })
+            })
+            $('.xiayige').on('touchend',function(){
+
+    if (iid <491) {
+                        iid = iid + 1
+                        id=iid;
+                    }
+    $.ajax({
+                        url: 'http://'+ip+'/detailword/' + iid + '/',//为空表示向当前地址发送请求
+                        type: 'post',
+                        data: {
+                            id: iid,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },//这里写要发送的前端数据
+                        success: function (args) {
+                            var dic_id = args['id'], dic_word = args['word'], dic_fanyi = args['fanyi'],
+                                dic_biaoji = args['biaoji'],dic_src=args['src'];
+
+                            $('.word').text(dic_word)
+                            $('.fanyi').text(dic_fanyi)
+                            $('.x').attr('src',dic_src)
+                            if(dic_biaoji==1){
+                                $('.btn').text('收藏')
+                                $('.btn').css('background-color','')
+                                $('.word').css('color','')
+
+                            }
+                            else{
+                                $('.btn').css('background-color', 'SpringGreen')
+                                $('.word').css('color', 'DarkOliveGreen')
+                                $('.btn').text('取消收藏')
+                            }
+                        }//接受后端发来的数据
+                    })
+})
+        })
+
+
+
+
+    </script>
+    <style type="text/css">
+        @media (min-width: 0px) and (max-width: 768px) {
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+
+            #aa {
+
+            }
+
+            .a {
+            }
+
+            .all {
+                padding-top: 15px;
+                margin: 130px 10px 20px 10px;
+                padding-bottom: 40px;
+                background-color: LavenderBlush;
+            }
+
+            .word {
+
+                margin-bottom: 50px;
+                font-size: 50px;
+                text-align: center;
+            }
+
+            .fanyi {
+                font-size: 30px;
+                text-align: center;
+                display: none;
+            }
+            .shangyige{
+                width: 80px;
+                height: 45px;
+                float: left;
+            }
+            .xiayige{
+                width: 80px;
+                height: 45px;
+                float: right;
+            }
+        }
+    </style>
+</head>
+<body>
+<button class="btn"></button>
+<div>
+    <a href="" id="aa" class="a">
+        <li></li>
+    </a>
+    <div class="all">
+        {% for data in a %}
+            {% if forloop.counter == 1 %}
+                {% for foo in data %}
+                    {% if forloop.counter == 2 %}
+                        <div class="word">{{ foo }}</div>
+                        {% load static%}
+                        <audio class='x' controls src="{{ src }}"></audio>
+                        <!-- <div>/static/wordmp3/{{foo}}.mp3</div> -->
+                    {% elif forloop.counter == 3 %}
+                        <div class="fanyi">{{ foo }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</div>
+    <div>
+        <button class='shangyige'>上一个</button>
+        <button class='xiayige'>下一个</button>
+    </div>
+
+</body>
+<script>
+
+
+
+
+    // $('.x').attr("src",{{foo}})
+
+                        {% for data in a %}
+                        {% for i in data %}
+                            {% if forloop.counter == 1 %}
+                                var id ={{ i }}
+                            {% endif %}
+                            {% if forloop.counter == 4 %}
+                                var i ={{ i }}
+                                if (i == 1) {
+                                    {#alert(i)#}
+                                    $('.btn').text('收藏')
+                                    {#$('.c3').css('color','green')#}
+                                    {#alert(i)#}
+                                } else {
+
+                                    $('.btn').css('background-color', 'SpringGreen')
+                                    $('.word').css('color', 'DarkOliveGreen')
+                                    $('.btn').text('取消收藏')
+                                }
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+
+
+
+
+
+
+
+</script>
+</html>
